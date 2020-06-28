@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>管理商品</title>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+                $('#add').click(function () {
+                    $('#add_msg').html('');
+                    var name = $('#goods_name').val();
+                    var price = $('#goods_price').val();
+                    var number = $('#goods_number').val();
+                    $.getJSON("/add/", {
+                        'goods_name': name,
+                        'goods_price': price,
+                        'goods_number': number
+                    }, function (result) {
+                        if (result === 100) {
+                            $('#add_msg').html('商品添加失败！');
+                        }
+                        if (result === 200) {
+                            $('#add_msg').html('成功添加商品！');
+                            setTimeout(function () {
+                                location.reload()
+                            }, 1000);
+                        }
+                    })
+                });
+                $('button.delete').click(function () {
+                    var name = $(this).attr('id');
+                    $.getJSON("/del/", {'goods_name': name}, function (result) {
+                        if (result === 200) {
+                            location.reload()
+                        }
+
+                    })
+                });
+                $(document).on('click', 'button.delete', function () {
+                    var name = $(this).attr('id');
+                    $.getJSON("/del/", {'goods_name': name}, function (result) {
+                        if (result === 200) {
+                            $('div').remove('#' + name);
+                            {#$('#' + name).remove();#}{#也可以使用这一句#}
+                        }
+                    })
+                });
+                $('#search').click(function () {
+                    $('#list').empty();
+                    var min_price = $('#min_price').val();
+                    var max_price = $('#max_price').val();
+                    $.getJSON("/search/", {
+                        'min_price': min_price,
+                        'max_price': max_price
+                    }, function (result) {
+                        var labels = '';
+                        if (result === 100) {
+                            labels = '<label>没有查询结果！</label>';
+                        } else {
+                            var data = JSON.parse(result);
+                            for (i in data) {
+                                labels += '<div id="' + data[i]['pk'] + '">';
+                                labels += '<label style="display:inline-block;width:125px;">名称：' + data[i]['fields']['goods_name'] + '</label>' +
+                                    '<label style="display:inline-block;width:95px;">数量：' + data[i]['fields']['goods_number'] + '</label>' +
+                                    '<label style="display:inline-block;width:95px;">价格：' + data[i]['fields']['goods_price'] + '</label>' +
+                                    '<button class="delete" type="button" id="' + data[i]['pk'] + '">删除</button><br>';
+                                labels += '</div>';
+                            }
+                        }
+                        $('#list').append(labels)
+                    })
+                });
+            }
+        )
+    </script>
+</head>
+<body>
+<h3>商品列表</h3>
+价格查询：<input type="text" style="display:inline-block;width:100px;" id="min_price"> ~
+<input type="text" style="display:inline-block;width:100px;" id="max_price">
+<button type="button" id="search">确定</button>
+<br>
+<br>
+<div id="list">
+    {% for goods in goods_list %}
+        <div id="{{ goods.goods_name }}">
+            <label style="display:inline-block;width:120px;">名称：{{ goods.goods_name }}</label>
+            <label style="display:inline-block;width:90px;">数量：{{ goods.goods_number }}</label>
+            <label style="display:inline-block;width:90px;">价格：{{ goods.goods_price }}</label>
+            <button class="delete" type="button" id="{{ goods.goods_name }}">删除</button>
+            <br>
+        </div>
+    {% endfor %}
+</div>
+<br>
+名称：<input type="text" style="display:inline-block;width:65px;" id="goods_name">
+数量：<input type="text" style="display:inline-block;width:40px;" id="goods_number">
+价格：<input type="text" style="display:inline-block;width:40px;" id="goods_price">
+<button type="button" id="add">添加</button>
+<label id="add_msg"></label>
+</body>
+</html>

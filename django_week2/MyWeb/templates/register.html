@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var registered = true;
+            $('#user_name').focusout(function () {
+                var name = $('#user_name').val();
+                if (name !== '') {
+                    $.getJSON("/check/", {'user_name': name}, function (result) {
+                        if (result === 100) {
+                            $('#msg_user').html('用户名已存在！');
+                            registered = true;
+                        } else if (result === 200) {
+                            $('#msg_user').html('');
+                            registered = false;
+                        }
+                    })
+                } else {
+                    $('#msg_user').html('请输入用户名！');
+                }
+            });
+            $('#register').click(function () {
+                var name = $('#user_name').val();
+                var pass = $('#password').val();
+                if (registered === false && name !== '' && pass !== '') {
+                    $.getJSON("/register/", {'user_name': name, 'password': pass}, function (result) {
+                        if (result["status"] === 100) {
+                            $('#msg_user').html('抱歉，注册失败！');
+                        }
+                        if (result["status"] === 200) {
+                            $('#msg_reg').html('恭喜您，注册成功！');
+                        }
+                    })
+                }
+            });
+        })
+    </script>
+</head>
+<body>
+<h3>用户注册</h3>
+<input type="text" name="user_name" id="user_name">
+<label id="msg_user"></label><br>
+<input type="password" name="password" id="password">
+<label id="msg_pass"></label><br><br>
+<button type="button" id="register">注册</button>
+<label id="msg_reg"></label>
+</body>
+</html>

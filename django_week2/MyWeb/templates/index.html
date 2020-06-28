@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+</head>
+<body>
+<h3>商品查询</h3>
+<form action="/all/" method="GET">
+    <input type="submit" value="查询全部">
+</form>
+<br>
+<form action="/search_name/" method="GET">
+    <input type="text" name="goods_name">
+    <input type="submit" value="名称查询">
+</form>
+<br>
+<form action="/search_price/" method="GET">
+    <input type="text" name="min_price">
+    <input type="text" name="max_price">
+    <input type="submit" value="价格区间查询">
+</form>
+<br>
+<form action="/search_sort/" method="GET">
+    <input type="radio" name="sort" value="all_asc" checked>查询全部并升序排列
+    <input type="radio" name="sort" value="all_desc">查询全部并降序排列
+    <input type="radio" name="sort" value="result_asc">条件查询并升序排列
+    <input type="submit" value="排序查询">
+</form>
+</body>
+</html>

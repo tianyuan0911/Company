@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <p>书名：<input type="text" name="name" placeholder={{ book.1 }}></p>
+    <p>作者：<input type="text" name="name" placeholder={{ book.2 }}></p>
+    <form action="{% url 'delete_book' %}" method="post">
+        <input type="hidden" name="book_id" value="{{ book.0 }}">
+        <input type="submit" value="删除">
+    </form>
+
+{% endblock %}
+

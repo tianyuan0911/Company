@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}{{ news_type }}新闻{% endblock %}
+{% block content %}
+    {{ news_type }}新闻列表：
+    <ul>
+        {% for date,title in news_titles %}
+            {% if forloop.first %}
+                <li><font color="red">{{ title }}</font> （{{ date }}）</li>
+            {% endif %}
+            <li>{{ title }}（{{ date }}）</li>
+        {% empty %}
+            抱歉：暂时没有新闻内容！
+        {% endfor %}
+    </ul>
+{% endblock %}

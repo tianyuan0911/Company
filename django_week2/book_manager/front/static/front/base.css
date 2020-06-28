@@ -1,0 +1,23 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.nav{
+    background: #3a3a3a;
+    height: 65px;
+    overflow: hidden;
+
+}
+.nav li{
+    float:left;
+    margin: 0 20px;
+    list-style: none;
+    line-height: 65px;
+}
+.nav li a{
+    color: #FFFFFF;
+    text-decoration: none;
+}
+.nav li a:hover{
+    color: aqua;
+}

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}默认{% endblock %} - 我的网站</title>
+</head>
+<body>
+    {% include 'nav.html' %}
+    {% block content %}这里是网站内容！{% endblock %}
+    {% include 'footer.html' %}
+</body>
+</html>
